@@ -1,10 +1,10 @@
-import ExportFile from './ExportFile';
+import FileExport from './FileExport';
 
 // Creating titles for columns
 const columns: string[] = ['A', 'B', 'C', 'D', 'E', 'F'];
 
-// Initializing and returning Worksheet, Workbook and instance of ExportFile Class
-const [ws, wb, wbFile] = new ExportFile('xlsx').init('Test 1', columns);
+// Initializing and returning Worksheet, Workbook and instance of FileExport Class
+const [ws, wb, wbFile] = new FileExport('xlsx').init('Test 1', columns);
 
 // Adding a row to the new Worksheet. Note that this method comes directly from the
 // Excel.js 'Workbook' class (Worksheet methods)
@@ -25,7 +25,7 @@ wb.eachSheet((ws: { name: string }, id: number) =>
 	console.log('Worksheet: ', ws.name, '\nID: ', id)
 );
 
-// Exporting the current Workbook as the specified format when creating a ExportFile instance
+// Exporting the current Workbook as the specified format when creating a FileExport instance
 // (async () => {
 // 	const fileName = await wbFile.exportWb('test');
 // 	console.log('FILE NAME:', fileName);

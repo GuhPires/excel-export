@@ -1,8 +1,8 @@
 // Using Excel.js lib: https://github.com/exceljs/exceljs
 const Workbook = require('exceljs').Workbook;
 
-// This 'ExportFile' class should be able to use all Excel.js 'Workbook' class methods
-export default class ExportFile extends Workbook {
+// This 'FileExport' class should be able to use all Excel.js 'Workbook' class methods
+export default class FileExport extends Workbook {
 	constructor(fileType: 'xlsx' | 'csv' = 'xlsx') {
 		super();
 		this.fileType = fileType;
@@ -23,22 +23,27 @@ export default class ExportFile extends Workbook {
 	}
 
 	// Creating Workshet for the current Workbook
-	addWs(name: string, columns: string[]): object {
+	addWs(
+		name: string,
+		columns: string[],
+		sizes: number | number[] = 15
+	): object {
 		const ws = this.wb.addWorksheet(name);
 		// Creating the column headers
-		ws.columns = columns.map(c => ({
-			header: c.toString(),
-			key: c.toString().toLowerCase(),
+		ws.columns = columns.map((c: string, i: number) => ({
+			header: c,
+			key: c.toLowerCase(),
+			width: Array.isArray(sizes) ? sizes[i] : sizes,
 		}));
 		// Returning the newly created Worksheet
 		return ws;
 	}
 
 	// Exporting current Workbook in the format specified into the contructor
-	async exportWb(fileName: string): Promise<string> {
+	async exportWb(fileName: string, stream: object): Promise<string> {
 		const finalName = `${fileName}.${this.fileType}`;
-		// Change the 'writeFile' method to 'write' in order to write in a stream.
-		await this.wb[this.fileType].writeFile(finalName);
+		// Change the 'write' method to 'writeFile' in order to write into a file.
+		await this.wb[this.fileType].write(stream);
 		// Returning the name of the exported file with the extension
 		return finalName;
 	}
