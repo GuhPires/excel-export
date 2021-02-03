@@ -1,0 +1,5 @@
+# THIS FILE CONATAINS ALL FILES THAT SHOULD BE IGNORED BY PRETTIER FORMATER.
+# SEE DOCS: https://prettier.io/docs/en/ignore.html
+
+# Build files
+dist
