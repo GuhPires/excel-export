@@ -9,7 +9,11 @@ export default class FileExport extends Workbook {
 	}
 
 	// Initialization method
-	init(wsName: string, columns: string[]): Iterator<object[]> | any {
+	init(
+		wsName: string,
+		columns: string[],
+		sizes: number | number[] = 15
+	): Iterator<object[]> | any {
 		// Checking if the method has been called for this instance
 		if (this.wb instanceof Workbook) {
 			console.error(
@@ -19,7 +23,7 @@ export default class FileExport extends Workbook {
 		}
 		this.wb = new Workbook();
 		// Returning the Worksheet, Workbook and the instance of this class
-		return [this.addWs(wsName, columns), this.wb, this];
+		return [this.addWs(wsName, columns, sizes), this.wb, this];
 	}
 
 	// Creating Workshet for the current Workbook
@@ -42,7 +46,7 @@ export default class FileExport extends Workbook {
 	// Exporting current Workbook in the format specified into the contructor
 	async exportWb(fileName: string, stream: object): Promise<string> {
 		const finalName = `${fileName}.${this.fileType}`;
-		// Change the 'write' method to 'writeFile' in order to write into a file.
+		// Change the 'write' method to 'writeFile' in order to write into a file instead of a stream.
 		await this.wb[this.fileType].write(stream);
 		// Returning the name of the exported file with the extension
 		return finalName;

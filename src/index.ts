@@ -1,10 +1,11 @@
+import fs from 'fs';
 import FileExport from './FileExport';
 
 // Creating titles for columns
 const columns: string[] = ['A', 'B', 'C', 'D', 'E', 'F'];
 
 // Initializing and returning Worksheet, Workbook and instance of FileExport Class
-const [ws, wb, wbFile] = new FileExport('xlsx').init('Test 1', columns);
+const [ws, wb, wbFile] = new FileExport('xlsx').init('Test 1', columns, 20);
 
 // Adding a row to the new Worksheet. Note that this method comes directly from the
 // Excel.js 'Workbook' class (Worksheet methods)
@@ -16,7 +17,7 @@ const shouldBeNull = wbFile.init('Test 2', ['T1', 'T2']);
 console.log('SHOULD BE NULL: ', shouldBeNull);
 
 // Creating a new Worksheet with a name and column titles
-const ws2 = wbFile.addWs('Test 2', ['T1', 'T2']);
+const ws2 = wbFile.addWs('Test 2', ['T1', 'T2'], 50);
 // Adding a row to the second Worksheet
 ws2.addRow([9, 8]);
 
@@ -26,7 +27,8 @@ wb.eachSheet((ws: { name: string }, id: number) =>
 );
 
 // Exporting the current Workbook as the specified format when creating a FileExport instance
-// (async () => {
-// 	const fileName = await wbFile.exportWb('test');
-// 	console.log('FILE NAME:', fileName);
-// })();
+(async () => {
+	const stream = fs.createWriteStream('test.xlsx');
+	const fileName = await wbFile.exportWb('SomeFile', stream);
+	console.log('FILE NAME:', fileName);
+})();
